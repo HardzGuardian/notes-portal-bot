@@ -243,17 +243,6 @@ function createBot({ db, pdfRoot = path.join(__dirname, 'pdf') } = {}) {
     authStrategy,
     puppeteer: {
       headless: true,
-      executablePath: (() => {
-        if (process.env.PUPPETEER_EXECUTABLE_PATH) return process.env.PUPPETEER_EXECUTABLE_PATH;
-        try {
-          // When deployed (e.g., Render), bundling puppeteer makes Chromium available.
-          // whatsapp-web.js uses puppeteer-core internally, so we provide the path explicitly.
-          // eslint-disable-next-line global-require, import/no-extraneous-dependencies
-          return require('puppeteer').executablePath();
-        } catch {
-          return undefined;
-        }
-      })(),
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     },
   });

@@ -42,8 +42,8 @@ In Render:
 - Connect your Git repo
 - **Root Directory**: `notes-portal-bot`
 - **Runtime**: Node
-- **Build Command**: `npm install`
-- Recommended **Build Command**: `npm ci`
+- **Build Command** (recommended):
+  - `npm ci && npx puppeteer browsers install chrome`
 - **Start Command**: `npm start`
 
 Render docs/landing: [Render](https://render.com/)
@@ -93,6 +93,21 @@ Fix:
 - Ensure `node_modules/` is **not** in your GitHub repo
 - In Render, use build command **`npm ci`**
 - In Render, click **Clear build cache & deploy** (so it reinstall dependencies for Linux)
+
+## Troubleshooting: “Browser was not found at the configured executablePath”
+
+If logs show something like:
+
+> Browser was not found at the configured executablePath (.../puppeteer/chrome/linux-.../chrome)
+
+It means Chromium was not downloaded into Puppeteer’s cache.
+
+Fix:
+- In Render, set **Build Command** to:
+  - `npm ci && npx puppeteer browsers install chrome`
+- Click **Clear build cache & deploy**
+
+This explicitly downloads a compatible headless Chromium for Puppeteer during the build, so the WhatsApp bot can launch the browser.
 
 ### If the QR does not render correctly in Render logs
 
