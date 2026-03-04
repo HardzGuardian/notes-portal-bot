@@ -389,7 +389,13 @@ function createBot({ db, pdfRoot = path.join(__dirname, 'pdf') } = {}) {
     }
   }
 
+  let isInitializing = false;
+  let reconnectTimer = null;
+
   async function start() {
+    if (isInitializing) return;
+    isInitializing = true;
+
     cleanupChromiumSingletonLocks();
     try {
       await client.initialize();
@@ -410,8 +416,25 @@ function createBot({ db, pdfRoot = path.join(__dirname, 'pdf') } = {}) {
 
       cleanupChromiumSingletonLocks();
       await client.initialize();
+    } finally {
+      isInitializing = false;
     }
   }
+
+  client.on('disconnected', (reason) => {
+    console.error('WhatsApp disconnected, reason:', reason);
+    if (reconnectTimer) return;
+
+    // Small delay to avoid rapid reconnect loops.
+    reconnectTimer = setTimeout(async () => {
+      reconnectTimer = null;
+      try {
+        await start();
+      } catch (err) {
+        console.error('Failed to auto-reconnect WhatsApp client:', err);
+      }
+    }, 5000);
+  });
 
   return { client, start, broadcast, SUBJECTS, NOTE_TYPES, pdfRoot };
 }
