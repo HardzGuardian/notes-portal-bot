@@ -248,9 +248,12 @@ function createBot({ db, pdfRoot = path.join(__dirname, 'pdf') } = {}) {
   });
 
   client.on('qr', (qr) => {
-    qrcode.generate(qr, { small: true });
-    // Also keep the raw QR in logs for remote debugging.
-    console.log('QR RECEIVED', qr);
+    // Log a direct QR image URL instead of an ASCII QR.
+    const encoded = encodeURIComponent(qr);
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encoded}`;
+    console.log('QR LOGIN URL (open in browser to scan):', qrUrl);
+    // Still log the raw string once for debugging if needed.
+    console.log('QR RAW STRING:', qr);
   });
 
   client.on('authenticated', () => console.log('WhatsApp authenticated.'));
