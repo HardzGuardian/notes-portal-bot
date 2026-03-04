@@ -1,0 +1,31 @@
+<%
+  const title = 'Dashboard';
+  const body = `
+    <section class="page-head">
+      <h1>Dashboard</h1>
+      <p class="muted">Quick overview of usage.</p>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <div class="card__label">Total Students</div>
+        <div class="card__value">${stats.totalStudents}</div>
+      </div>
+      <div class="card">
+        <div class="card__label">Most Requested Subject</div>
+        <div class="card__value">${stats.mostRequested ? stats.mostRequested.subject : '—'}</div>
+        <div class="card__meta">${stats.mostRequested ? `${stats.mostRequested.request_count} requests` : ''}</div>
+      </div>
+    </section>
+
+    <section class="card card--soft">
+      <h2>Admin Actions</h2>
+      <ul class="actions">
+        <li><a class="btn" href="/admin/upload">Upload PDFs</a></li>
+        <li><a class="btn btn--secondary" href="/admin/broadcast">Broadcast message + PDF</a></li>
+      </ul>
+    </section>
+  `;
+%>
+<%- include('partials/layout', { title, body }) %>
+

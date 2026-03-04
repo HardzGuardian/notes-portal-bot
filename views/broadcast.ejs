@@ -1,0 +1,34 @@
+<%
+  const title = 'Broadcast';
+  const alert = message
+    ? `<div class="alert alert--success">${message}</div>`
+    : (error ? `<div class="alert alert--error">${error}</div>` : '');
+
+  const body = `
+    <section class="page-head">
+      <h1>Broadcast</h1>
+      <p class="muted">Send a message (and optional PDF) to all students.</p>
+    </section>
+
+    ${alert}
+
+    <form class="card form" method="POST" action="/admin/broadcast" enctype="multipart/form-data">
+      <div class="form__row">
+        <label>Message</label>
+        <textarea name="message" rows="5" placeholder="Type your broadcast message..."></textarea>
+      </div>
+
+      <div class="form__row">
+        <label>PDF (optional)</label>
+        <input name="pdf" type="file" accept="application/pdf" />
+      </div>
+
+      <div class="form__actions">
+        <button class="btn" type="submit">Send Broadcast</button>
+        <a class="btn btn--secondary" href="/admin">Back</a>
+      </div>
+    </form>
+  `;
+%>
+<%- include('partials/layout', { title, body }) %>
+

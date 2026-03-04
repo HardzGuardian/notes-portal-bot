@@ -1,0 +1,50 @@
+<%
+  const title = 'Upload';
+  const subjectOptions = subjects
+    .map(s => `<option value="${s.key}">${s.key}</option>`)
+    .join('');
+  const typeOptions = types
+    .map(t => `<option value="${t.key}">${t.label} (${t.key})</option>`)
+    .join('');
+
+  const alert = message
+    ? `<div class="alert alert--success">${message}</div>`
+    : (error ? `<div class="alert alert--error">${error}</div>` : '');
+
+  const body = `
+    <section class="page-head">
+      <h1>Upload PDF</h1>
+      <p class="muted">Upload notes to the correct subject folder.</p>
+    </section>
+
+    ${alert}
+
+    <form class="card form" method="POST" action="/admin/upload" enctype="multipart/form-data">
+      <div class="form__row">
+        <label>Subject</label>
+        <select name="subject" required>
+          ${subjectOptions}
+        </select>
+      </div>
+
+      <div class="form__row">
+        <label>Type</label>
+        <select name="type" required>
+          ${typeOptions}
+        </select>
+      </div>
+
+      <div class="form__row">
+        <label>PDF File</label>
+        <input name="pdf" type="file" accept="application/pdf" required />
+      </div>
+
+      <div class="form__actions">
+        <button class="btn" type="submit">Upload</button>
+        <a class="btn btn--secondary" href="/admin">Back</a>
+      </div>
+    </form>
+  `;
+%>
+<%- include('partials/layout', { title, body }) %>
+
