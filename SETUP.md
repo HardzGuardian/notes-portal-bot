@@ -25,11 +25,15 @@ Add a **Persistent Disk** so these survive restarts:
 ## 3) Prepare your repo
 
 Make sure your `package.json` has:
-- **Build**: `npm install`
+- **Build**: `npm ci` (recommended on Render)
 - **Start**: `npm start`
 
 This project already uses:
 - `npm start` → runs `node server.js`
+
+Also ensure:
+- **Do not commit** `node_modules/` to GitHub (use `.gitignore`)
+- Node engine is set to an LTS version (this repo uses **Node 20.x**) to avoid native module issues with `sqlite3`
 
 ## 4) Create the Render Web Service
 
@@ -39,6 +43,7 @@ In Render:
 - **Root Directory**: `notes-portal-bot`
 - **Runtime**: Node
 - **Build Command**: `npm install`
+- Recommended **Build Command**: `npm ci`
 - **Start Command**: `npm start`
 
 Render docs/landing: [Render](https://render.com/)
@@ -79,6 +84,15 @@ After deploying:
 When successful, logs will show:
 - `WhatsApp authenticated.`
 - `WhatsApp client is ready.`
+
+## Troubleshooting: `sqlite3` “invalid ELF header” on Render
+
+This usually happens when a **Windows-built** `sqlite3` binary ends up in your deploy (for example, if `node_modules/` was committed).
+
+Fix:
+- Ensure `node_modules/` is **not** in your GitHub repo
+- In Render, use build command **`npm ci`**
+- In Render, click **Clear build cache & deploy** (so it reinstall dependencies for Linux)
 
 ### If the QR does not render correctly in Render logs
 
