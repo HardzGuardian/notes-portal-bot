@@ -239,10 +239,14 @@ function createBot({ db, pdfRoot = path.join(__dirname, 'pdf') } = {}) {
     }
   }
 
+  // Default to headless in server environments (e.g. Render), but allow overriding
+  // locally by setting HEADLESS=false when running the app.
+  const shouldRunHeadless = String(process.env.HEADLESS || 'true').toLowerCase() !== 'false';
+
   const client = new Client({
     authStrategy,
     puppeteer: {
-      headless: false,
+      headless: shouldRunHeadless,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     },
   });
