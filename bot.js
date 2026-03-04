@@ -242,7 +242,7 @@ function createBot({ db, pdfRoot = path.join(__dirname, 'pdf') } = {}) {
   const client = new Client({
     authStrategy,
     puppeteer: {
-      headless: true,
+      headless: false,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     },
   });
